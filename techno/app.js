@@ -49,14 +49,25 @@ const vm = new Vue({
     removerItem(index){
       this.produto.estoque++;
       this.carrinho.splice(index,1);
+    },
+    checarLocalStorage(){
+       if(window.localStorage.carrinho){
+        this.carrinho = JSON.parse(window.localStorage.carrinho)
+       }
     }
   },
   filters:{
       numeroPreco(valor){
         return valor.toLocaleString("pt-BR", {style: "currency", currency:"BRL"});
       }
-  },  
+  }, 
+  watch:{
+    carrinho(){
+      window.localStorage.carrinho = JSON.stringify(this.carrinho);
+    }
+  }, 
   created(){
+    this.checarLocalStorage()
     this.fetchProdutos()
   }
 })
